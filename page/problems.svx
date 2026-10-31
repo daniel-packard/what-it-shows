@@ -14,11 +14,12 @@ signature: Daniel Packard
 
 </script>
 
-[#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Its reports say otherwise.
-Read by body and placed by tenant, they hold three problems. One fix will not close them.
+[#4471](/kb/incidents/4471) was marked known: one bug, one fix queued. Its reports said otherwise.
+Read by body and placed by tenant, they hold three problems. Engineering closed #4471 on 5 October
+with two outcomes. The third problem is still open.
 
 <Callout>
-Not one issue. Three problems, each tracked on its own. The counts below are the desk's own view,
+Two problems closed on 5 October: `parser` fixed, `hint` won't fix. `one-day-move` is still open. The counts below are the desk's own view,
 computed from the reports at render time, so they move when the desk merges more.
 </Callout>
 
@@ -26,21 +27,22 @@ computed from the reports at render time, so they move when the desk merges more
 
 <CauseTable ticket={4471} />
 
-| problem | counted in the table as | tracked in |
-| --- | --- | --- |
-| `parser` | the `parser` row | [issue #1](https://github.com/daniel-packard/what-it-shows/issues/1) |
-| `hint` | the `hint` row | [issue #2](https://github.com/daniel-packard/what-it-shows/issues/2) |
-| `one-day-move` | the one-day-move note: filed under `parser` by tenant, so also inside the `parser` row | [issue #3](https://github.com/daniel-packard/what-it-shows/issues/3) |
+| problem | counted in the table as | outcome | tracked in |
+| --- | --- | --- | --- |
+| `parser` | the `parser` row | fixed 5 Oct: `fix(dates): parse dd/mm for eu locales` | [issue #1](https://github.com/daniel-packard/what-it-shows/issues/1), closed |
+| `hint` | the `hint` row | won't fix 5 Oct: booking-v3 form retired | [issue #2](https://github.com/daniel-packard/what-it-shows/issues/2), closed |
+| `one-day-move` | the one-day-move note: filed under `parser` by tenant, so also inside the `parser` row | **open**: not covered by the 5 Oct update | [issue #3](https://github.com/daniel-packard/what-it-shows/issues/3), open |
 
 ### `parser`: the shared parser reads dates month first
 
 Day-first tenants write `07/04`, the parser reads 4 July. The day and month swap. This is the bug
-#4471 was opened for, and most of its reports.
+#4471 was opened for, and most of its reports. **Fixed 5 October.**
 
 ### `hint`: the booking-v3 form asks for the month first
 
 booking-v3 prints `MM/DD/YYYY` under its date field. People type what the hint says, and the form
-reads it the tenant's way, day first. Only reports sent through the booking-v3 form, from day-first
+reads it the tenant's way, day first. **Won't fix: booking-v3 was retired 5 October**, so no new
+reports of this kind can arrive. Only reports sent through the booking-v3 form, from day-first
 tenants. The parser fix does not touch it: the form needs its hint changed. Intake tags miss it both
 ways, so place these reports by tenant and channel, not by tag.
 
@@ -48,7 +50,8 @@ ways, so place these reports by tenant and channel, not by tag.
 
 A flipped day and month cannot move a date by one day. These reports describe something else: the
 same meeting on Tuesday in Lisbon and Monday in Toronto, every June booking a day off, an invite
-that arrived before its booking. That points at time zones or daylight saving, not at date order.
+that arrived before its booking. That points at time zones or daylight saving, not at date order. **Still open:** the dd/mm fix does
+not touch it, and closing #4471 did not close it.
 The desk read them this way already. They stay counted where they are
 filed, under `parser`, and are tracked on their own.
 

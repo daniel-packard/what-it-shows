@@ -3,9 +3,12 @@
 
 Usage: python3 -I split.py [kb-root]   (default: kb/support-kb)
 
+Counts follow the desk's own view (CauseTable as exported): every report is
+counted where it is filed, by tenant; the one-day moves are a subset noted on top.
 Rules (found by reading every body, 2026-10-30):
   one-day-move  the desk's own list (desk-notes.json oneDayMove); the body shows a
-                date off by one day, not a day/month flip
+                date off by one day, not a day/month flip. Also counted in its
+                filed cause (parser).
   hint          causes.ts rule: day-first tenant, report came through the booking
                 form, and the tenant runs booking-v3 (hint prints MM/DD/YYYY)
   parser        every other report from a day-first tenant (shared parser reads
@@ -40,8 +43,6 @@ DAY_FIRST = {'en-GB', 'en-IE', 'nl-NL', 'da-DK', 'pl-PL', 'cs-CZ', 'de-DE', 'it-
 
 def problem(r):
     t = tenants.get(r['tenant'])
-    if r['id'] in one_day:
-        return 'one-day-move'
     if not t or t['locale'] not in DAY_FIRST:
         return 'unplaced'
     if r['channel'] == 'form' and t['form'] == 'booking-v3':
@@ -63,6 +64,7 @@ for p, rs in sorted(by.items(), key=lambda kv: -len(kv[1])):
     days = sorted(r['receivedAt'][:10] for r in rs)
     print(f'{p:13} {len(rs):4}  tenants {len({r["tenant"] for r in rs}):2}  '
           f'{days[0]} → {days[-1]}  intake tags {dict(Counter(r["meta"]["intakeTag"] for r in rs))}')
+print(f'{"one-day-move":13} {len([r for r in merged if r["id"] in one_day]):4}  (filed under their cause, counted there too)')
 unread = [r for r in merged if r['id'] not in one_day and not_a_flip(r)]
 for r in unread:
     print('UNREAD', r['id'], r['body'])

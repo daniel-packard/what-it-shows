@@ -8,28 +8,29 @@ signature: Daniel Packard
 ---
 
 <script>
-  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
-  const tracked = {
-    parser: 'https://github.com/daniel-packard/what-it-shows/issues/1',
-    hint: 'https://github.com/daniel-packard/what-it-shows/issues/2',
-    'one-day-move': 'https://github.com/daniel-packard/what-it-shows/issues/3',
-  };
 </script>
 
 [#4471](/kb/incidents/4471) is marked known: one bug, one fix queued. Its reports say otherwise.
 Read by body and placed by tenant, they hold three problems. One fix will not close them.
 
 <Callout>
-Not one issue. Three problems, each tracked on its own. The counts below are computed from the
-reports at render time, so they move when the desk merges more.
+Not one issue. Three problems, each tracked on its own. The counts below are the desk's own view,
+computed from the reports at render time, so they move when the desk merges more.
 </Callout>
 
 ## The problems
 
-<ProblemTable ticket={4471} {tracked} />
+<CauseTable ticket={4471} />
+
+| problem | counted in the table as | tracked in |
+| --- | --- | --- |
+| `parser` | the `parser` row | [issue #1](https://github.com/daniel-packard/what-it-shows/issues/1) |
+| `hint` | the `hint` row | [issue #2](https://github.com/daniel-packard/what-it-shows/issues/2) |
+| `one-day-move` | the one-day-move note: filed under `parser` by tenant, so also inside the `parser` row | [issue #3](https://github.com/daniel-packard/what-it-shows/issues/3) |
 
 ### `parser`: the shared parser reads dates month first
 
@@ -48,8 +49,8 @@ ways, so place these reports by tenant and channel, not by tag.
 A flipped day and month cannot move a date by one day. These reports describe something else: the
 same meeting on Tuesday in Lisbon and Monday in Toronto, every June booking a day off, an invite
 that arrived before its booking. That points at time zones or daylight saving, not at date order.
-The desk read them this way already; they are counted here
-under their own problem, not footnoted under `parser`.
+The desk read them this way already. They stay counted where they are
+filed, under `parser`, and are tracked on their own.
 
 ## How to place a new report
 
